@@ -60,4 +60,20 @@ public class Board {
 
         return piece(position) != null;
     }
+
+    public Piece removePiece(Position position) {
+        if (!positionExistsByPosition(position)) {
+            throw new BoardException("Error position board: Position not exists");
+        }
+
+        if (piece(position) == null) {
+            return null;
+        }
+
+        Piece pieceAux = piece(position);
+        pieceAux.position = null;
+        pieces[position.getRow()][position.getColumn()] = null;
+
+        return pieceAux;
+    }
 }
