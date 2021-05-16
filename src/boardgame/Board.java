@@ -50,7 +50,7 @@ public class Board {
     }
 
     private boolean positionExists(int row, int column) {
-        return row >= 0 && row <= 8 && column >= 0 && column <= 8;
+        return row >= 0 && row < rows && column >= 0 && column < columns;
     }
 
     public boolean hasPiece(Position position) {
