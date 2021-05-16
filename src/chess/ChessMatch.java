@@ -7,11 +7,19 @@ import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
+import javax.swing.plaf.ColorUIResource;
+
 public class ChessMatch {
     private Board board;
 
+    private int turn;
+    private Color currentPlayer;
+
     public ChessMatch() {
         board = new Board(8, 8);
+        turn = 1;
+        currentPlayer = Color.WHITE;
+
         initSetup();
     }
 
@@ -25,6 +33,14 @@ public class ChessMatch {
         }
 
         return chessPieces;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public Color getCurrentPlayer() {
+        return currentPlayer;
     }
 
     private void initSetup() {
@@ -53,6 +69,8 @@ public class ChessMatch {
 
         Piece capturedPiece = makeMove(source, target);
 
+        nextTurn();
+
         return (ChessPiece) capturedPiece;
     }
 
@@ -76,6 +94,10 @@ public class ChessMatch {
             throw new ChessException("Error chess position: There is no piece on source position");
         }
 
+        if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) {
+            throw new ChessException("Error chess piece: The chosen piece is not yours");
+        }
+
         if (!board.piece(position).isThereAnyPossibleMove()) {
             throw new ChessException("Error chess position: There is no possible moves for the chosen piece");
         }
@@ -85,5 +107,10 @@ public class ChessMatch {
         if (!board.piece(source).canMove(target)) {
             throw new ChessException("Error target position: The chosen piece can't move to target position");
         }
+    }
+
+    private void nextTurn() {
+        turn++;
+        currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 }
